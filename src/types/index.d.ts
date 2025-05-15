@@ -19,3 +19,7 @@ export interface TouchableProps {
   children: React.ReactNode;
   containerStyle: StyleProp<ViewStyle>;
 }
+
+export interface ImportButtonProps {
+  onPress?: () => void;
+}

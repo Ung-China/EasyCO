@@ -1,5 +1,5 @@
 import {Platform} from 'react-native';
-import Dimension from '../dimensions';
+import Dimension from '../dimension';
 
 const Margin = {
   EXTRA_SMALL: 5,

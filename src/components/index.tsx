@@ -1,4 +1,5 @@
 import Touchable from './Touchable';
 import ImportButton from './ImportButton';
+import FileItem from './FileItem';
 
-export {Touchable, ImportButton};
+export {Touchable, ImportButton, FileItem};
