@@ -9,9 +9,9 @@ import TaskDetail from './models/TaskDetail';
 
 // First, create the adapter to the underlying database:
 const adapter = new SQLiteAdapter({
-  schema,
+  schema: schema,
   // (You might want to comment it out for development purposes -- see Migrations documentation)
-  migrations,
+  migrations: migrations,
   // (optional database name or file system path)
   // dbName: 'myapp',
   // (recommended option, should work flawlessly out of the box on iOS. On Android,
@@ -27,6 +27,7 @@ const adapter = new SQLiteAdapter({
 const database = new Database({
   adapter,
   modelClasses: [Task, TaskDetail],
+  actionsEnabled: true,
 });
 
 export default database;

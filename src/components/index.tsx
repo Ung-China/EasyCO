@@ -1,5 +1,5 @@
 import Touchable from './Touchable';
 import ImportButton from './ImportButton';
-import FileItem from './FileItem';
+import LoadingModal from './LoadingModal';
 
-export {Touchable, ImportButton, FileItem};
+export {Touchable, ImportButton, LoadingModal};

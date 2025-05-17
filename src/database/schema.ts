@@ -14,12 +14,12 @@ export default appSchema({
     tableSchema({
       name: 'task_details',
       columns: [
-        {name: 'task_id', type: 'string', isIndexed: true},
         {name: 'no', type: 'number'},
-        {name: 'account_id', type: 'number'},
+        {name: 'account_id', type: 'string'},
         {name: 'name', type: 'string'},
         {name: 'price', type: 'number'},
         {name: 'total', type: 'number'},
+        {name: 'task_id', type: 'string', isIndexed: true},
       ],
     }),
   ],

@@ -23,3 +23,7 @@ export interface TouchableProps {
 export interface ImportButtonProps {
   onPress?: () => void;
 }
+
+export interface LoadingModalProps {
+  visible: boolean;
+}

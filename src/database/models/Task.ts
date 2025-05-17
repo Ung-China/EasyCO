@@ -7,6 +7,5 @@ export default class Task extends Model {
   @text('branch_location') branchLocation;
   @text('selected_day') selectedDay;
   @text('selected_currency') selectedCurrency;
-
   @children('task_details') taskDetails;
 }
