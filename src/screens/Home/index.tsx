@@ -12,16 +12,15 @@ const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleImport = async () => {
-    // setIsLoading(true);
-
     try {
       const response = await pick({
         allowMultiSelection: false,
         type: [types.xls, types.xlsx],
       });
 
-      const file = response[0];
+      setIsLoading(true);
 
+      const file = response[0];
       const filePath = file.uri.replace('file://', '');
       const fileContent = await RNFS.readFile(filePath, 'base64');
       const workbook = XLSX.read(fileContent, {type: 'base64'});
@@ -45,38 +44,29 @@ const HomeScreen = () => {
       }));
 
       await database.write(async () => {
-        const task = await database.get('tasks').create(taskRecord => {
-          taskRecord.branchLocation = branchLocation;
-          taskRecord.selectedDay = selectedDay;
-          taskRecord.selectedCurrency = currency;
-        });
-
-        const taskDetailCollection = database.get('task_details');
-        for (const item of data) {
-          await taskDetailCollection.create(detail => {
-            detail.number = item.no;
-            detail.accountId = item.accountId;
-            detail.name = item.name;
-            detail.price = item.price;
-            detail.total = item.total;
-            detail.taskId = task.id;
-          });
+        const allTasks = await database.get('tasks').query().fetch();
+        for (const task of allTasks) {
+          await task.markAsDeleted();
         }
+
+        await database.get('tasks').create(task => {
+          task.branchLocation = branchLocation;
+          task.selectedDay = selectedDay;
+          task.selectedCurrency = currency;
+          task.taskDetails = JSON.stringify(data);
+        });
       });
-
-      const savedTasks = await database.get('tasks').query().fetch();
-      console.log('Saved Tasks:', savedTasks);
-
-      for (const savedTask of savedTasks) {
-        const details = await savedTask.taskDetails.fetch();
-        console.log(`Task ${savedTask.id} details:`, details);
-      }
-
-      // console.log('DATA', data);
     } catch (error) {
       console.error('ERROR WHILE IMPORT FILE:', error);
+      Alert.alert(
+        'Import Failed',
+        'There was an error importing the task data. Please try again.',
+      );
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
+      setTimeout(() => {
+        Alert.alert('Success', 'Task data has been imported.');
+      }, 500);
     }
   };
 

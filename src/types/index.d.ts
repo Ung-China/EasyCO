@@ -27,3 +27,9 @@ export interface ImportButtonProps {
 export interface LoadingModalProps {
   visible: boolean;
 }
+
+export interface TaskHeaderProps {
+  branchLocation: string;
+  date: string;
+  currency: string;
+}

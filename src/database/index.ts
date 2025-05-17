@@ -5,7 +5,6 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import schema from './schema';
 import migrations from './migrations';
 import Task from './models/Task';
-import TaskDetail from './models/TaskDetail';
 
 // First, create the adapter to the underlying database:
 const adapter = new SQLiteAdapter({
@@ -26,8 +25,12 @@ const adapter = new SQLiteAdapter({
 // Then, make a Watermelon database from it!
 const database = new Database({
   adapter,
-  modelClasses: [Task, TaskDetail],
-  actionsEnabled: true,
+  modelClasses: [Task],
 });
+
+export async function fetchAllTasks() {
+  const tasksCollection = database.collections.get('tasks');
+  return await tasksCollection.query().fetch();
+}
 
 export default database;
