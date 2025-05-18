@@ -1,20 +1,20 @@
 import {StyleSheet} from 'react-native';
-import {Gap, Margin, Padding, Radius} from '../../constants';
+import {Gap, Padding, Radius} from '../../constants';
 
 export default StyleSheet.create({
-  contianer: {
-    margin: Margin.DEFAULT,
+  container: {
+    paddingHorizontal: Padding.DEFAULT,
+    backgroundColor: 'white',
     padding: Padding.DEFAULT,
     borderRadius: Radius.DEFAULT,
+    flexDirection: 'row',
     gap: Gap.DEFAULT,
-    backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   icon: {
-    fontSize: 50,
+    fontSize: 40,
   },
-  label: {
+  name: {
     color: 'black',
     fontSize: 15,
   },

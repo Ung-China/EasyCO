@@ -1,11 +1,11 @@
 import {Text, View} from 'react-native';
 import styles from './style';
 
-const TaskDetail = () => {
+const TaskDetailScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Task Screen</Text>
+      <Text>Task Detail Screen</Text>
     </View>
   );
 };
-export default TaskDetail;
+export default TaskDetailScreen;

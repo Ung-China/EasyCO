@@ -2,7 +2,7 @@ import {StyleProp, ViewStyle} from 'react-native';
 
 export type BottomTabParamList = {
   Home: undefined;
-  Task: undefined;
+  Tasks: undefined;
   Report: undefined;
 };
 
@@ -12,6 +12,7 @@ export type RootStackParamList = {
 
 export type StackParamList = {
   RootStack: undefined;
+  TaskDetail: undefined;
 };
 
 export interface TouchableProps {
@@ -32,4 +33,16 @@ export interface TaskHeaderProps {
   branchLocation: string;
   date: string;
   currency: string;
+}
+
+export interface TaskItemProps {
+  onPress?: () => void;
+  item: {
+    id: number;
+    no: number;
+    accountId: string;
+    name: string;
+    price: number;
+    total: number;
+  };
 }

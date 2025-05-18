@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import database from './src/database';
 import AppNavigation from './src/navigation';
 import {DatabaseProvider} from '@nozbe/watermelondb/react';

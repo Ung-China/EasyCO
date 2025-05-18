@@ -28,9 +28,6 @@ const database = new Database({
   modelClasses: [Task],
 });
 
-export async function fetchAllTasks() {
-  const tasksCollection = database.collections.get('tasks');
-  return await tasksCollection.query().fetch();
-}
-
 export default database;
+
+export const tasksCollection = database.get<Task>('tasks');

@@ -1,10 +1,11 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
+
 import {RootStackParamList} from '../../types';
 import StackNavigator from '../StackNavigator';
 import {StatusBar} from 'react-native';
 
-const RootStack = createNativeStackNavigator<RootStackParamList>();
+const RootStack = createStackNavigator<RootStackParamList>();
 
 const RootNavigation = () => {
   return (

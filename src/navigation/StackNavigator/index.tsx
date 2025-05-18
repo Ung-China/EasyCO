@@ -1,8 +1,9 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackParamList} from '../../types';
 import BottomTabNavigator from '../BottomTabNavigator';
+import {TaskDetailScreen} from '../../screens';
+import {createStackNavigator} from '@react-navigation/stack';
 
-const Stack = createNativeStackNavigator<StackParamList>();
+const Stack = createStackNavigator<StackParamList>();
 
 const StackNavigator = () => {
   return (
@@ -11,6 +12,16 @@ const StackNavigator = () => {
         name="RootStack"
         component={BottomTabNavigator}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TaskDetail"
+        component={TaskDetailScreen}
+        options={{
+          headerBackTitle: '',
+          headerTitleAlign: 'center',
+          headerTintColor: 'black',
+          title: 'Task',
+        }}
       />
     </Stack.Navigator>
   );

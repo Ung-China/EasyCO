@@ -6,9 +6,9 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{headerTitleAlign: 'center'}}>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Task" component={TaskScreen} />
+      <Tab.Screen name="Tasks" component={TaskScreen} />
       <Tab.Screen name="Report" component={ReportScreen} />
     </Tab.Navigator>
   );
