@@ -64,15 +64,17 @@ const HomeScreen = () => {
       );
     } finally {
       setIsLoading(false);
-      setTimeout(() => {
-        Alert.alert('Success', 'Task data has been imported.');
-      }, 500);
+      Alert.alert('Success', 'Task data has been imported.');
     }
   };
 
   return (
     <View style={styles.container}>
-      <ImportButton onPress={handleImport} />
+      <ImportButton
+        onPress={handleImport}
+        icon={'📥'}
+        label="Select file (.xls or .xlsx)"
+      />
       <LoadingModal visible={isLoading} />
     </View>
   );

@@ -23,6 +23,8 @@ export interface TouchableProps {
 
 export interface ImportButtonProps {
   onPress?: () => void;
+  icon: string;
+  label: string;
 }
 
 export interface LoadingModalProps {
@@ -45,4 +47,11 @@ export interface TaskItemProps {
     price: number;
     total: number;
   };
+}
+
+export interface FlexibleTextInputProps {
+  value: string;
+  placeholder?: string;
+  onValueChange: (text: string) => void;
+  error?: string;
 }

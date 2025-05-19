@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Gap, Margin} from '../../constants';
+import {Gap, Margin, Padding} from '../../constants';
 
 export default StyleSheet.create({
   container: {
@@ -9,5 +9,17 @@ export default StyleSheet.create({
     gap: Gap.DEFAULT,
     marginHorizontal: Margin.DEFAULT,
     marginBottom: Margin.DEFAULT,
+  },
+  noTasksAvailableContainer: {
+    padding: Padding.DEFAULT,
+    gap: Gap.DEFAULT,
+  },
+  noTasksAvailable: {
+    textAlign: 'center',
+    fontSize: 15,
+  },
+  icon: {
+    textAlign: 'center',
+    fontSize: 60,
   },
 });

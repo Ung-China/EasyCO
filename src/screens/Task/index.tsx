@@ -1,4 +1,4 @@
-import {FlatList, ScrollView} from 'react-native';
+import {FlatList, ScrollView, Text, View} from 'react-native';
 import styles from './style';
 import {TaskHeader, TaskItem} from '../../components';
 import {withObservables} from '@nozbe/watermelondb/react';
@@ -9,6 +9,15 @@ import type {StackNavigationProp} from '@react-navigation/stack';
 
 const TaskScreen = ({tasks}) => {
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
+
+  if (!tasks || tasks.length === 0) {
+    return (
+      <View style={styles.noTasksAvailableContainer}>
+        <Text style={styles.icon}>📦</Text>
+        <Text style={styles.noTasksAvailable}>No tasks available.</Text>
+      </View>
+    );
+  }
 
   const task = tasks[0]._raw;
 
