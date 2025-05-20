@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Alert, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, PermissionsAndroid, Platform, View} from 'react-native';
 import styles from './style';
 import {pick, types} from '@react-native-documents/picker';
 import {ImportButton, LoadingModal} from '../../components';
@@ -67,6 +67,27 @@ const HomeScreen = () => {
       Alert.alert('Success', 'Task data has been imported.');
     }
   };
+
+  const requestAndroidPermission = async () => {
+    if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Permission Required',
+          message: 'App needs access to your storage to download the file',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    requestAndroidPermission();
+  });
 
   return (
     <View style={styles.container}>

@@ -31,6 +31,10 @@
 		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need access to save exported files</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>We need access to save exported files</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
