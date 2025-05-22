@@ -19,9 +19,9 @@ const ReportScreen = () => {
       const task = tasks[0];
       const details = JSON.parse(task.taskDetails || '[]');
 
+      // Build original data
       const sheetData = [];
-
-      sheetData.push(['Task Report']);
+      sheetData.push(['Branch Location', 'Selected Date', 'Currency']);
       sheetData.push([
         task.branchLocation,
         task.selectedDay,
@@ -33,7 +33,33 @@ const ReportScreen = () => {
         sheetData.push([row.no, row.accountId, row.name, row.price, row.total]);
       });
 
-      const ws = XLSX.utils.aoa_to_sheet(sheetData);
+      // Add empty first row and first column
+      const paddedData = sheetData.map(row => ['', ...row]);
+      paddedData.unshift([]); // first row empty
+
+      // Create worksheet
+      const ws = XLSX.utils.aoa_to_sheet(paddedData);
+
+      // Style: center alignment
+      const centerStyle = {
+        alignment: {
+          horizontal: 'center',
+          vertical: 'center',
+        },
+      };
+
+      // Apply style to all cells
+      Object.keys(ws).forEach(cell => {
+        if (cell[0] !== '!') {
+          ws[cell].s = centerStyle;
+        }
+      });
+
+      // Set all columns to width 20
+      const maxCols = paddedData[0]?.length || 0;
+      ws['!cols'] = Array(maxCols).fill({wch: 20});
+
+      // Write workbook
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Tasks');
 
