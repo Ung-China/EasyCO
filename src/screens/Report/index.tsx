@@ -1,11 +1,12 @@
 import React from 'react';
 import {Alert, Platform, View} from 'react-native';
+import ExcelJS from 'exceljs';
+import RNFS from 'react-native-fs';
+import Share from 'react-native-share';
+
+import {tasksCollection} from '../../database';
 import styles from './style';
 import {ImportButton} from '../../components';
-import XLSX from 'xlsx';
-import RNFS from 'react-native-fs';
-import {tasksCollection} from '../../database';
-import Share from 'react-native-share';
 
 const ReportScreen = () => {
   const handleExport = async () => {
@@ -19,51 +20,88 @@ const ReportScreen = () => {
       const task = tasks[0];
       const details = JSON.parse(task.taskDetails || '[]');
 
-      // Build original data
-      const sheetData = [];
-      sheetData.push(['Branch Location', 'Selected Date', 'Currency']);
-      sheetData.push([
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Tasks');
+
+      const headerInfoRow = worksheet.addRow([
+        'Branch Location',
+        'Selected Date',
+        'Currency',
+      ]);
+      headerInfoRow.height = 25;
+      headerInfoRow.eachCell(cell => {
+        cell.font = {bold: true, color: {argb: 'FFFFFFFF'}};
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: {argb: 'FF1F4E78'},
+        };
+        cell.alignment = {horizontal: 'center', vertical: 'middle'};
+        cell.border = {
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'},
+        };
+      });
+
+      const headerInfoDataRow = worksheet.addRow([
         task.branchLocation,
         task.selectedDay,
         task.selectedCurrency,
       ]);
-      sheetData.push(['No', 'Account ID', 'Name', 'Price', 'Total']);
+      headerInfoDataRow.height = 25;
+      headerInfoDataRow.eachCell(cell => {
+        cell.alignment = {horizontal: 'center', vertical: 'middle'};
+      });
+
+      worksheet.columns = [{width: 20}, {width: 20}, {width: 20}];
+
+      const headerRow = worksheet.addRow([
+        'No',
+        'Account ID',
+        'Name',
+        'Price',
+        'Total',
+      ]);
+      headerRow.height = 25;
+      headerRow.eachCell(cell => {
+        cell.font = {bold: true, color: {argb: 'FFFFFFFF'}};
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: {argb: 'FF1F4E78'},
+        };
+        cell.alignment = {horizontal: 'center', vertical: 'middle'};
+        cell.border = {
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'},
+        };
+      });
+
+      worksheet.columns = [
+        {key: 'no', width: 30},
+        {key: 'accountId', width: 30},
+        {key: 'name', width: 30},
+        {key: 'price', width: 30},
+        {key: 'total', width: 30},
+      ];
 
       details.forEach(row => {
-        sheetData.push([row.no, row.accountId, row.name, row.price, row.total]);
+        const dataRow = worksheet.addRow({
+          no: row.no,
+          accountId: row.accountId,
+          name: row.name,
+          price: row.price,
+          total: row.total,
+        });
+        dataRow.height = 25;
+        dataRow.alignment = {horizontal: 'center', vertical: 'middle'};
       });
 
-      // Add empty first row and first column
-      const paddedData = sheetData.map(row => ['', ...row]);
-      paddedData.unshift([]); // first row empty
-
-      // Create worksheet
-      const ws = XLSX.utils.aoa_to_sheet(paddedData);
-
-      // Style: center alignment
-      const centerStyle = {
-        alignment: {
-          horizontal: 'center',
-          vertical: 'center',
-        },
-      };
-
-      // Apply style to all cells
-      Object.keys(ws).forEach(cell => {
-        if (cell[0] !== '!') {
-          ws[cell].s = centerStyle;
-        }
-      });
-
-      // Set all columns to width 20
-      const maxCols = paddedData[0]?.length || 0;
-      ws['!cols'] = Array(maxCols).fill({wch: 20});
-
-      // Write workbook
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Tasks');
-
-      const wbout = XLSX.write(wb, {type: 'base64', bookType: 'xlsx'});
+      const buffer = await workbook.xlsx.writeBuffer();
 
       const exportFileName = `Task_Report_${Date.now()}.xlsx`;
       const filePath =
@@ -71,7 +109,7 @@ const ReportScreen = () => {
           ? `${RNFS.CachesDirectoryPath}/${exportFileName}`
           : `${RNFS.DocumentDirectoryPath}/${exportFileName}`;
 
-      await RNFS.writeFile(filePath, wbout, 'base64');
+      await RNFS.writeFile(filePath, buffer.toString('base64'), 'base64');
 
       await Share.open({
         title: 'Exported Excel File',
@@ -92,7 +130,7 @@ const ReportScreen = () => {
       <ImportButton
         onPress={handleExport}
         icon={'📤'}
-        label="Export file (.xls or .xlsx)"
+        label="Export file (.xlsx)"
       />
     </View>
   );
