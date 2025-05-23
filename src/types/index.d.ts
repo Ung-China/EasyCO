@@ -12,7 +12,16 @@ export type RootStackParamList = {
 
 export type StackParamList = {
   RootStack: undefined;
-  TaskDetail: undefined;
+  TaskDetail: {
+    item: {
+      id: number;
+      no: number;
+      accountId: string;
+      name: string;
+      price: number;
+      total: number;
+    };
+  };
 };
 
 export interface TouchableProps {
@@ -53,5 +62,8 @@ export interface FlexibleTextInputProps {
   value: string;
   placeholder?: string;
   onValueChange: (text: string) => void;
-  error?: string;
+  keyboardType: string;
+  editable?: boolean;
+  multiline?: boolean;
+  label: string;
 }

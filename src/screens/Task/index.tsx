@@ -22,11 +22,11 @@ const TaskScreen = ({tasks}) => {
   const task = tasks[0]._raw;
 
   const taskItem = ({item}: TaskItemProps) => {
-    return <TaskItem onPress={navigateToTaskDetail} item={item} />;
+    return <TaskItem onPress={() => navigateToTaskDetail(item)} item={item} />;
   };
 
-  const navigateToTaskDetail = () => {
-    return navigation.navigate('TaskDetail');
+  const navigateToTaskDetail = (item: TaskItemProps) => {
+    return navigation.navigate('TaskDetail', {item});
   };
 
   return (
@@ -48,7 +48,7 @@ const TaskScreen = ({tasks}) => {
 };
 
 const enhance = withObservables([], () => ({
-  tasks: tasksCollection.query(),
+  tasks: tasksCollection.query().observe(),
 }));
 
 const EnhancedTaskScreen = enhance(TaskScreen);

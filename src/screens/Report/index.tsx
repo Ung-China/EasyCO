@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, Platform, View} from 'react-native';
 import ExcelJS from 'exceljs';
 import RNFS from 'react-native-fs';
@@ -6,11 +6,14 @@ import Share from 'react-native-share';
 
 import {tasksCollection} from '../../database';
 import styles from './style';
-import {ImportButton} from '../../components';
+import {ImportButton, LoadingModal} from '../../components';
 
 const ReportScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleExport = async () => {
     try {
+      setIsLoading(true);
       const tasks = await tasksCollection.query().fetch();
       if (!tasks.length) {
         Alert.alert('No Data', 'There is no data to export.');
@@ -118,10 +121,14 @@ const ReportScreen = () => {
         showAppsToView: true,
         saveToFiles: true,
       });
+
+      Alert.alert('Success', 'Task data has been exported.');
     } catch (err) {
       if (err.message.includes('CANCELLED')) return;
       console.error('Export error:', err);
       Alert.alert('Export Failed', 'Something went wrong during export.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -132,6 +139,7 @@ const ReportScreen = () => {
         icon={'📤'}
         label="Export file (.xlsx)"
       />
+      <LoadingModal visible={isLoading} />
     </View>
   );
 };
